@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Admin\Marker;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Hash;
 use DB, Log;
 
-class MarkerController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,8 @@ class MarkerController extends Controller
      */
     public function index()
     {
-        $markers = Marker::with('detail')->orderBy('id', 'desc')->get();
-        return Inertia::render('Markers/Index', ['markers' => $markers]);
+        $users = User::where('id', '!=', auth()->user()->id )->orderBy('id', 'asc')->get();
+        return Inertia::render('Users/Index', ['users' => $users]);
     }
 
     /**
@@ -28,7 +29,7 @@ class MarkerController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Markers/Create');
+        return Inertia::render('Users/Create');
     }
 
     /**
@@ -40,22 +41,19 @@ class MarkerController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $marker = new Marker;
-        if ($marker->isValid($request, $data)) {
+        $user = new User;
+        if ($user->isValid($request, $data)) {
             DB::beginTransaction();
             try {
-                $marker->fill($data);
-                $marker->user_id = auth()->user()->id;
-                $marker->save();
+                $user->fill($data);
+                $user->password = Hash::make($request->password);
+                $user->save();
                 DB::commit();
-                if ($request->create_new_register) {
-                    return redirect()->route('markers.create');
-                }
-                return redirect()->route('markers.index');
+                return redirect()->route('users.index');
             } catch (\Exception $e) {
                 DB::rollback();
                 Log::error($e->getMessage());
-                return redirect()->route('markers.create');
+                return redirect()->route('users.create');
             }
         }
         return abort(500);
@@ -64,10 +62,10 @@ class MarkerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Admin\Marker  $marker
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Marker $marker)
+    public function show($id)
     {
         //
     }
@@ -75,38 +73,37 @@ class MarkerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Admin\Marker  $marker
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Marker $marker)
+    public function edit($id)
     {
-        return Inertia::render('Markers/Edit', ['marker' => $marker]);
+        $user = User::find($id);
+        return Inertia::render('Users/Edit', ['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Admin\Marker  $marker
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Marker $marker)
+    public function update(Request $request, $id)
     {
         $data = $request->all();
-        if ($marker->isValid($request, $data)) {
+        $user = User::find($id);
+        if ($user->isValid($request, $data)) {
             DB::beginTransaction();
             try {
-                $marker->fill($data);
-                $marker->save();
+                $user->fill($data);
+                $user->save();
                 DB::commit();
-                if ($request->create_new_register) {
-                    return redirect()->route('markers.create');
-                }
-                return redirect()->route('markers.index');
+                return redirect()->route('users.index');
             } catch (\Exception $e) {
                 DB::rollback();
                 Log::error($e->getMessage());
-                return redirect()->route('markers.create');
+                return Inertia::render('Users/Edit', ['user' => $user]);
             }
         }
         return abort(500);
@@ -115,16 +112,13 @@ class MarkerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Admin\Marker  $marker
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Marker $marker)
+    public function destroy($id)
     {
-        $marker->load('detail');
-        if(!count($marker->detail)) {
-            $marker->delete();
-        }
-        
-        return redirect()->route('markers.index');
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route('users.index');
     }
 }

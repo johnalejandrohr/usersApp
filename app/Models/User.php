@@ -18,13 +18,17 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'names',
+        'surnames',
+        'cedula',
         'email',
+        'country',
+        'addres',
+        'cellphone',
+        'isAdmin',
         'password',
-        'key_telegram',
-        'chatid_telegram',
     ];
-
+    
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -43,4 +47,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Function for validate data.
+     */
+    public function isValid($request, $data)
+    {
+        $rules = [
+            'names' => 'required|string|max:100|min:5',
+            'surnames' => 'required|string|max:100|min:5',
+            'surnames' => 'required|string|max:100|min:5',
+            'country' => 'required|max:255|string',
+            'email' => 'required|string|email|max:150|unique:users',
+            'cedula' => 'required|string|max:15|unique:users',
+            'addres' => 'required|string|max:180',
+            'cellphone' => 'required|string|max:10',
+        ];
+        $request->validate($rules);
+        return true;
+    }
 }

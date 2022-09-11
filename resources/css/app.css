@@ -77,3 +77,45 @@
     position: absolute;
     left: -9999px;
   }
+
+
+  body {
+      background-color: #ededf3;;
+  }
+
+/* WELCOME */
+.welcome {
+    width: 100vw;
+    height: 92vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* header */
+.header {
+    background-color: white;
+    border-bottom: 1px solid rgb(193, 197, 216);
+    width: 100vw;
+    height: 8vh;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.header__link {
+    color: rebeccapurple;
+}
+
+.sectionLogin {
+    width: 100vw;
+    min-height: 100vh;
+    background-color: rebeccapurple;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}

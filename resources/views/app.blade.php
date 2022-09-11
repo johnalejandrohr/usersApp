@@ -26,9 +26,10 @@
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
     <title>Tareas!</title>
+    <link rel="stylesheet" href={{url('css/app.css')}}>
 </head>
 
-<body class="font-sans antialiased" style="background: #ededf3">
+<body class="font-sans antialiased">
     @inertia
 
     {{-- @env('local')

@@ -25,34 +25,28 @@ export default function Admin({ auth, header, children, errors }) {
                                 </NavLink>
                             </li>
                             <li className="nav-item">
+                                <NavLink href={route('users.index')} active={route().current('users*')}>
+                                    Usuarios
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
                                 <NavLink href={route('tasks.index')} active={route().current('tasks*')}>
                                     Tareas
                                 </NavLink>
                             </li>
-                            <li className="nav-item">
-                                <NavLink href={route('markers.index')} active={route().current('markers*')}>
-                                    Marcadores
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink href={route('tareas.index')} active={route().current('tareas*')}>
-                                    Tasks
-                                </NavLink>
-                            </li>
                         </ul>
                     </div>
-
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
-                        <li className="nav-item dropdown">
-                            <a className="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {auth.user.name}
-                            </a>
-                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a className="dropdown-item" href={route('profile.edit', auth.user.id)} method="get">Perfil</a></li>
-                                <li><a className="dropdown-item" href={route('logout')} method="post">Salir</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link text-white dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={{textTransform:'capitalize'}}>
+                                    {auth.user.names} {auth.user.surnames}
+                                </a>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a className="dropdown-item" href={route('profile.edit', auth.user.id)} method="get">Perfil</a></li>
+                                    <li><Link className="dropdown-item" href={route('logout')} method="post">Salir</Link></li>
+                                </ul>
+                            </li>
+                        </ul>
                 </div>
             </nav>
             {/* {
