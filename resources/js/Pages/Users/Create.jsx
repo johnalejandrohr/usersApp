@@ -4,6 +4,8 @@ import { Link, Head, useForm } from '@inertiajs/inertia-react';
 import swal from 'sweetalert';
 
 export default function Create(props) {
+    const { categories } = props;
+    console.log(categories, 'categories');
     const { data, setData, post, processing, errors, reset } = useForm({
         names: '',
         surnames: '',
@@ -13,6 +15,7 @@ export default function Create(props) {
         addres: '',
         cellphone: '',
         password: '',
+        country_id: '',
     });
     const [countries, setCountries] = useState({});
     const onHandleChange = (event) => {
@@ -145,6 +148,17 @@ export default function Create(props) {
                                         onChange={onHandleChange}
                                     ></input>
                                     {errors.cellphone && <div className="text-danger">{errors.cellphone}</div>}
+                                </div>
+                                <div className="mb-3 col-md-6">
+                                    <label htmlFor="country_id" className="form-label">Categoria</label>
+                                    <select className="form-select" name="country_id"
+                                        defaultValue={data.country_id}
+                                        onChange={onHandleChange}
+                                    >
+                                        <option value="">Seleccione</option>
+                                        {categories.map((item, index) => <option key={index} value={item.id}>{item.name}</option>)}
+                                    </select>
+                                    {errors.country_id && <div className="text-danger">{errors.country_id}</div>}
                                 </div>
                             </div>
                             <div className="row">

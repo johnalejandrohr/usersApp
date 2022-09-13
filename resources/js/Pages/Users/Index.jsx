@@ -96,7 +96,7 @@ export default function Create(props) {
                                             })
                                             :
                                             <tr>
-                                                <th className='text-center text-white bg-secondary' colSpan={6}>No hay datos</th>
+                                                <th className='text-center text-white bg-dark' colSpan={7}>No hay datos</th>
                                             </tr>
                                     }
                                 </tbody>

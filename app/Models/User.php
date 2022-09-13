@@ -27,6 +27,7 @@ class User extends Authenticatable
         'cellphone',
         'isAdmin',
         'password',
+        'category_id',
     ];
     
     /**

@@ -8,6 +8,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
 use DB, Log;
+use App\Models\Admin\Category;
 
 class UserController extends Controller
 {
@@ -29,7 +30,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Users/Create');
+        $categories = Category::where('isActive', true)->get();
+        return Inertia::render('Users/Create', ['categories' => $categories]);
     }
 
     /**

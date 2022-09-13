@@ -23,10 +23,14 @@ class CreateUsersTable extends Migration
             $table->string('addres');
             $table->string('cellphone');
             $table->boolean('isAdmin')->default(0);
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('restrict');
+
         });
     }
 
